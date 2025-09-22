@@ -10,17 +10,17 @@ interface StatCardProps {
 
 export function StatCard({ title, value, change, period, isPositive = true }: StatCardProps) {
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <h3 className="text-sm text-muted-foreground mb-2">{title}</h3>
-      <div className="text-3xl font-bold text-foreground mb-2">{value}</div>
-      <div className="flex items-center space-x-2">
-        <div className={`flex items-center space-x-1 ${
+    <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
+      <h3 className="mb-2 text-sm font-medium text-muted-foreground">{title}</h3>
+      <div className="mb-2 text-3xl font-semibold text-foreground">{value}</div>
+      <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-1 text-sm font-medium ${
           isPositive ? "text-stat-positive" : "text-stat-negative"
         }`}>
-          <TrendingUp className="w-4 h-4" />
-          <span className="text-sm font-medium">{change}</span>
+          <TrendingUp className="h-4 w-4" />
+          <span>{change}</span>
         </div>
-        <span className="text-sm text-muted-foreground">{period}</span>
+        <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{period}</span>
       </div>
     </div>
   );

@@ -17,15 +17,15 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route 
-            path="/" 
+          <Route
+            path="/"
             element={
-              <div className="flex h-[1024px] bg-background overflow-hidden">
+              <div className="flex h-screen w-full overflow-hidden bg-muted/40">
                 <Sidebar />
                 <Dashboard />
                 <RightSidebar />
               </div>
-            } 
+            }
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

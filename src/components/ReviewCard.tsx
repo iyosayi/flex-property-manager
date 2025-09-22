@@ -10,35 +10,35 @@ interface ReviewCardProps {
   description: string;
 }
 
-export function ReviewCard({ 
-  image, 
-  title, 
-  subtitle, 
-  location, 
-  stayDuration, 
-  rating, 
-  description 
+export function ReviewCard({
+  image,
+  title,
+  subtitle,
+  location,
+  stayDuration,
+  rating,
+  description
 }: ReviewCardProps) {
   return (
-    <div className="flex items-start space-x-4 p-4 bg-property-card-bg border border-property-card-border rounded-lg">
-      <img 
-        src={image} 
-        alt={title} 
-        className="w-20 h-20 rounded-lg object-cover flex-shrink-0"
+    <div className="flex h-full items-start gap-4 rounded-2xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:shadow-md">
+      <img
+        src={image}
+        alt={title}
+        className="h-20 w-20 flex-shrink-0 rounded-xl object-cover"
       />
-      <div className="flex-1 min-w-0">
-        <h3 className="font-semibold text-foreground mb-1">{title}</h3>
-        <p className="text-sm text-muted-foreground mb-2">{subtitle}</p>
-        <p className="text-sm text-muted-foreground mb-3">{description}</p>
+      <div className="min-w-0 flex-1">
+        <h3 className="mb-1 text-base font-semibold text-foreground">{title}</h3>
+        <p className="mb-2 text-sm text-muted-foreground">{subtitle}</p>
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
-      <div className="flex flex-col items-end space-y-2 flex-shrink-0">
-        <div className="text-sm text-muted-foreground">{location}</div>
+      <div className="flex flex-shrink-0 flex-col items-end gap-2">
+        <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{location}</div>
         <div className="text-sm text-muted-foreground">{stayDuration}</div>
-        <div className="flex items-center space-x-1">
-          <Star className="w-4 h-4 fill-success text-success" />
-          <span className="text-sm font-medium">{rating}</span>
+        <div className="flex items-center gap-1 text-sm font-medium text-foreground">
+          <Star className="h-4 w-4 fill-success text-success" />
+          <span>{rating}</span>
         </div>
-        <ArrowRight className="w-4 h-4 text-muted-foreground" />
+        <ArrowRight className="h-4 w-4 text-muted-foreground" />
       </div>
     </div>
   );

@@ -17,56 +17,57 @@ const mentionTags = [
 
 export function GuestMentionsChart() {
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Top guest mentions</h3>
+          <h3 className="text-lg font-semibold text-foreground">Top guest mentions</h3>
           <p className="text-sm text-muted-foreground">Properties with the highest ratings</p>
         </div>
-        <div className="flex items-center space-x-4">
-          <select className="text-sm border border-border rounded px-3 py-1 bg-background">
+        <div className="flex items-center gap-3">
+          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Locations</option>
           </select>
-          <select className="text-sm border border-border rounded px-3 py-1 bg-background">
+          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Date range</option>
           </select>
         </div>
       </div>
-      
+
       {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-6">
+      <div className="mb-6 flex flex-wrap gap-2">
         {mentionTags.map((tag, index) => (
-          <span 
+          <button
             key={index}
-            className={`px-3 py-1 rounded-full text-sm ${
-              tag.active 
-                ? "bg-primary text-primary-foreground" 
-                : "bg-muted text-muted-foreground"
+            className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+              tag.active
+                ? "border-transparent bg-primary text-primary-foreground"
+                : "border-border bg-background text-muted-foreground hover:border-primary/40"
             }`}
+            type="button"
           >
             {tag.label}
-          </span>
+          </button>
         ))}
       </div>
-      
+
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data}>
-            <XAxis 
-              dataKey="location" 
+            <XAxis
+              dataKey="location"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
+              tick={{ fontSize: 12, fill: "#6B7280" }}
             />
-            <YAxis 
+            <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
+              tick={{ fontSize: 12, fill: "#6B7280" }}
             />
-            <Bar 
-              dataKey="value" 
-              fill="hsl(var(--success))" 
-              radius={[4, 4, 0, 0]}
+            <Bar
+              dataKey="value"
+              fill="hsl(var(--success))"
+              radius={[6, 6, 0, 0]}
             />
           </BarChart>
         </ResponsiveContainer>
