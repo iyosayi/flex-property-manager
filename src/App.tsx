@@ -8,6 +8,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Dashboard } from "@/components/Dashboard";
 import { RightSidebar } from "@/components/RightSidebar";
 import { AllProperties } from "@/components/AllProperties";
+import { PropertyDetails } from "@/components/PropertyDetails";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,14 @@ const App = () => (
             element={(
               <AppLayout showRightSidebar={false}>
                 <AllProperties />
+              </AppLayout>
+            )}
+          />
+          <Route
+            path="/properties/:id"
+            element={(
+              <AppLayout showRightSidebar={false}>
+                <PropertyDetails />
               </AppLayout>
             )}
           />
