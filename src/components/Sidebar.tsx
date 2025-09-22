@@ -9,7 +9,7 @@ const navigationItems = [
 
 export function Sidebar() {
   return (
-    <aside className="flex h-full w-24 flex-shrink-0 flex-col items-center border-r border-border bg-sidebar-bg pb-10 pt-8 text-sidebar-text">
+    <aside className="flex h-full w-20 flex-shrink-0 flex-col items-center border-r border-border bg-sidebar-bg pb-10 pt-8 text-sidebar-text">
       <div className="flex h-full flex-col items-center gap-10">
         {/* Logo */}
         <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sidebar-text text-sidebar-bg">
@@ -21,14 +21,13 @@ export function Sidebar() {
           {navigationItems.map((item, index) => (
             <button
               key={index}
-              className={`flex w-24 flex-col items-center justify-center gap-1 rounded-2xl px-3 py-3 text-sm transition-colors ${
+              className={`flex h-11 w-11 items-center justify-center rounded-xl transition-colors ${
                 item.active
                   ? "bg-sidebar-hover text-sidebar-text"
                   : "text-sidebar-icon hover:bg-sidebar-hover hover:text-sidebar-text"
               }`}
             >
               <item.icon size={20} />
-              <span className="text-xs font-medium">{item.label}</span>
             </button>
           ))}
         </nav>
