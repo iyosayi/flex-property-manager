@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,9 +7,24 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Sidebar } from "@/components/Sidebar";
 import { Dashboard } from "@/components/Dashboard";
 import { RightSidebar } from "@/components/RightSidebar";
+import { AllProperties } from "@/components/AllProperties";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+const AppLayout = ({
+  children,
+  showRightSidebar = true
+}: {
+  children: ReactNode;
+  showRightSidebar?: boolean;
+}) => (
+  <div className="flex h-screen w-full overflow-hidden bg-muted/40">
+    <Sidebar />
+    {children}
+    {showRightSidebar ? <RightSidebar /> : null}
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -17,15 +33,14 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
+          <Route path="/" element={<AppLayout><Dashboard /></AppLayout>} />
           <Route
-            path="/"
-            element={
-              <div className="flex h-screen w-full overflow-hidden bg-muted/40">
-                <Sidebar />
-                <Dashboard />
-                <RightSidebar />
-              </div>
-            }
+            path="/properties"
+            element={(
+              <AppLayout showRightSidebar={false}>
+                <AllProperties />
+              </AppLayout>
+            )}
           />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

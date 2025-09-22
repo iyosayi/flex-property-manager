@@ -1,10 +1,11 @@
+import { NavLink } from "react-router-dom";
 import { Home, TrendingUp, Settings, Building2 } from "lucide-react";
 
 const navigationItems = [
-  { icon: Home, label: "Overview", active: true },
-  { icon: Building2, label: "Properties", active: false },
-  { icon: TrendingUp, label: "Trends", active: false },
-  { icon: Settings, label: "Settings", active: false },
+  { icon: Home, label: "Overview", to: "/" },
+  { icon: Building2, label: "Properties", to: "/properties" },
+  { icon: TrendingUp, label: "Trends" },
+  { icon: Settings, label: "Settings" }
 ];
 
 export function Sidebar() {
@@ -18,18 +19,40 @@ export function Sidebar() {
 
         {/* Navigation */}
         <nav className="flex flex-1 flex-col items-center gap-3">
-          {navigationItems.map((item, index) => (
-            <button
-              key={index}
-              className={`flex h-11 w-11 items-center justify-center rounded-xl transition-colors ${
-                item.active
-                  ? "bg-sidebar-hover text-sidebar-text"
-                  : "text-sidebar-icon hover:bg-sidebar-hover hover:text-sidebar-text"
-              }`}
-            >
-              <item.icon size={20} />
-            </button>
-          ))}
+          {navigationItems.map((item) => {
+            const Icon = item.icon;
+
+            if (item.to) {
+              return (
+                <NavLink
+                  key={item.label}
+                  to={item.to}
+                  aria-label={item.label}
+                  className={({ isActive }) =>
+                    `flex h-11 w-11 items-center justify-center rounded-xl transition-colors ${
+                      isActive
+                        ? "bg-sidebar-hover text-sidebar-text shadow-sm"
+                        : "text-sidebar-icon hover:bg-sidebar-hover hover:text-sidebar-text"
+                    }`
+                  }
+                >
+                  <Icon size={20} />
+                </NavLink>
+              );
+            }
+
+            return (
+              <button
+                key={item.label}
+                type="button"
+                aria-label={item.label}
+                className="flex h-11 w-11 items-center justify-center rounded-xl text-sidebar-icon/70"
+                disabled
+              >
+                <Icon size={20} />
+              </button>
+            );
+          })}
         </nav>
       </div>
     </aside>

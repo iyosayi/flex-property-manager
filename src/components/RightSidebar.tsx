@@ -10,7 +10,10 @@ export function RightSidebar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-muted" />
-            <span className="font-medium text-foreground">Jamie Fox</span>
+            <div>
+              <div className="font-medium text-foreground">Jamie Fox</div>
+              <div className="text-xs text-muted-foreground">Manager</div>
+            </div>
           </div>
         </div>
       </div>
