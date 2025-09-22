@@ -17,82 +17,80 @@ const data = [
 
 export function ReviewsChart() {
   return (
-    <div className="bg-card border border-border rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
+    <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-1">Reviews</h3>
+          <h3 className="text-lg font-semibold text-foreground">Reviews</h3>
           <p className="text-sm text-muted-foreground">Properties with the highest ratings</p>
         </div>
-        <div className="flex items-center space-x-4">
-          <select className="text-sm border border-border rounded px-3 py-1 bg-background">
+        <div className="flex items-center gap-3">
+          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Locations</option>
           </select>
-          <select className="text-sm border border-border rounded px-3 py-1 bg-background">
+          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Date range</option>
           </select>
         </div>
       </div>
-      
+
       {/* Legend */}
-      <div className="flex items-center space-x-6 mb-4">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full bg-success"></div>
-          <span className="text-sm text-muted-foreground">Great reviews</span>
+      <div className="mb-6 flex flex-wrap items-center gap-5 text-sm text-muted-foreground">
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-success" />
+          <span>Great reviews</span>
         </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full bg-chart-line-2"></div>
-          <span className="text-sm text-muted-foreground">Neutral</span>
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-chart-line-2" />
+          <span>Neutral</span>
         </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full bg-stat-negative"></div>
-          <span className="text-sm text-muted-foreground">Bad reviews</span>
+        <div className="flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-stat-negative" />
+          <span>Bad reviews</span>
         </div>
       </div>
-      
+
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data}>
-            <XAxis 
-              dataKey="month" 
+            <XAxis
+              dataKey="month"
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
+              tick={{ fontSize: 12, fill: "#6B7280" }}
             />
-            <YAxis 
+            <YAxis
               axisLine={false}
               tickLine={false}
-              tick={{ fontSize: 12, fill: '#6B7280' }}
+              tick={{ fontSize: 12, fill: "#6B7280" }}
             />
-            <Line 
-              type="monotone" 
-              dataKey="great" 
-              stroke="hsl(var(--success))" 
+            <Line
+              type="monotone"
+              dataKey="great"
+              stroke="hsl(var(--success))"
               strokeWidth={2}
               dot={false}
             />
-            <Line 
-              type="monotone" 
-              dataKey="neutral" 
-              stroke="hsl(var(--chart-line-2))" 
+            <Line
+              type="monotone"
+              dataKey="neutral"
+              stroke="hsl(var(--chart-line-2))"
               strokeWidth={2}
               dot={false}
             />
-            <Line 
-              type="monotone" 
-              dataKey="bad" 
-              stroke="hsl(var(--stat-negative))" 
+            <Line
+              type="monotone"
+              dataKey="bad"
+              stroke="hsl(var(--stat-negative))"
               strokeWidth={2}
               dot={false}
             />
           </LineChart>
         </ResponsiveContainer>
       </div>
-      
-      <div className="mt-4 text-center">
-        <p className="text-sm text-muted-foreground">
-          Consistently neutral reviews over the last 3 months for properties in London
-        </p>
-      </div>
+
+      <p className="mt-6 text-center text-sm text-muted-foreground">
+        Consistently neutral reviews over the last 3 months for properties in London
+      </p>
     </div>
   );
 }

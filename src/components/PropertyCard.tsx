@@ -9,35 +9,35 @@ interface PropertyCardProps {
   isPositive?: boolean;
 }
 
-export function PropertyCard({ 
-  image, 
-  title, 
-  location, 
-  rating, 
+export function PropertyCard({
+  image,
+  title,
+  location,
+  rating,
   reviewCount,
-  isPositive = true 
+  isPositive = true
 }: PropertyCardProps) {
   return (
-    <div className="bg-property-card-bg border border-property-card-border rounded-lg p-4">
-      <img 
-        src={image} 
-        alt={title} 
-        className="w-full h-32 rounded-lg object-cover mb-3"
+    <div className="rounded-2xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:shadow-md">
+      <img
+        src={image}
+        alt={title}
+        className="mb-4 h-32 w-full rounded-xl object-cover"
       />
-      <h3 className="font-medium text-foreground mb-1">{title}</h3>
-      <p className="text-sm text-muted-foreground mb-3">{location}</p>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-1">
-          <Star 
-            className={`w-4 h-4 ${
-              isPositive 
-                ? "fill-success text-success" 
+      <h3 className="mb-1 text-base font-semibold text-foreground">{title}</h3>
+      <p className="mb-4 text-sm text-muted-foreground">{location}</p>
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center gap-1 text-foreground">
+          <Star
+            className={`h-4 w-4 ${
+              isPositive
+                ? "fill-success text-success"
                 : "fill-stat-negative text-stat-negative"
-            }`} 
+            }`}
           />
-          <span className="text-sm font-medium">{rating}</span>
+          <span className="font-medium">{rating}</span>
         </div>
-        <span className="text-sm text-muted-foreground">{reviewCount} reviews</span>
+        <span>{reviewCount} reviews</span>
       </div>
     </div>
   );
