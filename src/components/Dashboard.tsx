@@ -172,8 +172,8 @@ export function Dashboard() {
               </div>
             </section>
 
-            <section className="rounded-3xl border border-border bg-background px-8 py-7 shadow-sm">
-              <div className="grid gap-8 xl:grid-cols-2">
+            <section className="grid gap-6 lg:grid-cols-2">
+              <div className="rounded-3xl border border-border bg-background px-8 py-7 shadow-sm">
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
@@ -192,7 +192,9 @@ export function Dashboard() {
                     ))}
                   </div>
                 </div>
+              </div>
 
+              <div className="rounded-3xl border border-border bg-background px-8 py-7 shadow-sm">
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
