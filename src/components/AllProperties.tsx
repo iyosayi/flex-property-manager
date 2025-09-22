@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -212,8 +213,9 @@ export function AllProperties() {
                   {viewMode === "grid" ? (
                     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                       {properties.map((property) => (
-                        <article
+                        <Link
                           key={property.id}
+                          to={`/properties/${property.id}`}
                           className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background/90 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
                         >
                           <div className="relative overflow-hidden">
@@ -273,14 +275,15 @@ export function AllProperties() {
                               </span>
                             </div>
                           </div>
-                        </article>
+                        </Link>
                       ))}
                     </div>
                   ) : (
                     <div className="space-y-4">
                       {properties.map((property) => (
-                        <article
+                        <Link
                           key={property.id}
+                          to={`/properties/${property.id}`}
                           className="group flex flex-col gap-6 rounded-2xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-lg md:flex-row"
                         >
                           <div className="overflow-hidden rounded-2xl md:w-64 lg:w-72">
@@ -340,7 +343,7 @@ export function AllProperties() {
                               </div>
                             </div>
                           </div>
-                        </article>
+                        </Link>
                       ))}
                     </div>
                   )}
