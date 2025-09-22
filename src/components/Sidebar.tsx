@@ -1,9 +1,9 @@
-import { Home, TrendingUp, Settings, BarChart3, Map } from "lucide-react";
+import { Home, TrendingUp, Settings, Building2 } from "lucide-react";
 
 const navigationItems = [
   { icon: Home, label: "Overview", active: true },
-  { icon: BarChart3, label: "Trends", active: false },
-  { icon: Map, label: "Map", active: false },
+  { icon: Building2, label: "Properties", active: false },
+  { icon: TrendingUp, label: "Trends", active: false },
   { icon: Settings, label: "Settings", active: false },
 ];
 
