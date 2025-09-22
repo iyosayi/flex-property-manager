@@ -5,85 +5,89 @@ const topMentions = ["Cleanliness", "Great locations", "Cleanliness"];
 
 export function RightSidebar() {
   return (
-    <div className="w-80 bg-background border-l border-border p-6 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-muted rounded-full"></div>
-          <span className="font-medium text-foreground">Jamie Fox</span>
-        </div>
-      </div>
-
-      {/* How we've been doing */}
-      <div className="space-y-4">
+    <aside className="flex h-full w-80 flex-shrink-0 flex-col border-l border-border bg-background">
+      <div className="border-b border-border px-6 pb-6 pt-7">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-foreground">How we've been doing</h2>
-          <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-            <span>14 days</span>
-            <ChevronDown className="w-4 h-4" />
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-muted" />
+            <span className="font-medium text-foreground">Jamie Fox</span>
           </div>
         </div>
+      </div>
 
-        {/* Good reviews */}
-        <div className="space-y-3">
-          <img 
-            src={apartmentCollage1} 
-            alt="Property collage" 
-            className="w-full h-24 rounded-lg object-cover"
-          />
-          <div>
-            <h3 className="font-medium text-foreground mb-1">Good reviews</h3>
-            <div className="text-4xl font-bold text-stat-positive mb-1">90%</div>
-            <div className="text-sm text-muted-foreground mb-3">
-              Locations like London & Algiers<br />
-              get consistently good reviews
-            </div>
-            <div>
-              <div className="text-sm font-medium text-foreground mb-2">Top mentions</div>
-              <div className="flex flex-wrap gap-2">
-                {topMentions.map((mention, index) => (
-                  <span 
-                    key={index}
-                    className="px-3 py-1 bg-muted text-sm text-muted-foreground rounded-full"
-                  >
-                    {mention}
-                  </span>
-                ))}
+      <div className="flex-1 overflow-y-auto px-6 py-8">
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-foreground">How we've been doing</h2>
+            <button className="flex items-center gap-2 rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
+              <span>Last 14 days</span>
+              <ChevronDown className="h-3.5 w-3.5" />
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            <div className="space-y-3 rounded-2xl border border-border bg-muted/40 p-4">
+              <img
+                src={apartmentCollage1}
+                alt="Property collage"
+                className="h-24 w-full rounded-xl object-cover"
+              />
+              <div className="space-y-3">
+                <div>
+                  <h3 className="text-sm font-medium text-foreground">Good reviews</h3>
+                  <div className="text-4xl font-semibold text-stat-positive">90%</div>
+                  <p className="text-sm text-muted-foreground">
+                    Locations like London &amp; Algiers get consistently good reviews
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Top mentions</div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {topMentions.map((mention, index) => (
+                      <span
+                        key={index}
+                        className="rounded-full bg-background px-3 py-1 text-xs text-muted-foreground"
+                      >
+                        {mention}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Bad reviews */}
-        <div className="space-y-3">
-          <img 
-            src={apartmentCollage1} 
-            alt="Property collage" 
-            className="w-full h-24 rounded-lg object-cover"
-          />
-          <div>
-            <h3 className="font-medium text-foreground mb-1">Bad reviews</h3>
-            <div className="text-4xl font-bold text-stat-negative mb-1">32%</div>
-            <div className="text-sm text-muted-foreground mb-3">
-              Paris properties have been getting<br />
-              frequent bad reviews lately
-            </div>
-            <div>
-              <div className="text-sm font-medium text-foreground mb-2">Top mentions</div>
-              <div className="flex flex-wrap gap-2">
-                {topMentions.map((mention, index) => (
-                  <span 
-                    key={index}
-                    className="px-3 py-1 bg-muted text-sm text-muted-foreground rounded-full"
-                  >
-                    {mention}
-                  </span>
-                ))}
+            <div className="space-y-3 rounded-2xl border border-border bg-muted/40 p-4">
+              <img
+                src={apartmentCollage1}
+                alt="Property collage"
+                className="h-24 w-full rounded-xl object-cover"
+              />
+              <div className="space-y-3">
+                <div>
+                  <h3 className="text-sm font-medium text-foreground">Bad reviews</h3>
+                  <div className="text-4xl font-semibold text-stat-negative">32%</div>
+                  <p className="text-sm text-muted-foreground">
+                    Paris properties have been getting frequent bad reviews lately
+                  </p>
+                </div>
+                <div>
+                  <div className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Top mentions</div>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {topMentions.map((mention, index) => (
+                      <span
+                        key={index}
+                        className="rounded-full bg-background px-3 py-1 text-xs text-muted-foreground"
+                      >
+                        {mention}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
