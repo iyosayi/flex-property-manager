@@ -20,7 +20,13 @@ const LocationMap = () => {
         <MapContainer
           center={hackneyPosition}
           zoom={14}
-          style={{ height: '100%', width: '100%' }}
+          style={{ 
+            height: '100%', 
+            width: '100%',
+            willChange: 'transform',
+            backfaceVisibility: 'hidden',
+            transform: 'translateZ(0)'
+          }}
           className="rounded-xl"
         >
           <TileLayer

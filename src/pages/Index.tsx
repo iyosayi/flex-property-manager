@@ -7,6 +7,7 @@ import StayPolicies from "@/components/StaysPolicy";
 import LocationMap from "@/components/LocationMap";
 import Footer from "@/components/Footer";
 import AboutProperty from "@/components/AboutProperty";
+import Reviews from "@/components/Reviews";
 
 const Index = () => {
   return (
@@ -32,6 +33,9 @@ const Index = () => {
                 <BookingWidget />
               </div>
             </div>
+            
+            {/* Reviews section spans full width */}
+            <Reviews />
             </div>
           </main>
         </div>

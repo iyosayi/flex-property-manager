@@ -1,6 +1,8 @@
 import { Star } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface PropertyCardProps {
+  id: string;
   image: string;
   title: string;
   location: string;
@@ -10,6 +12,7 @@ interface PropertyCardProps {
 }
 
 export function PropertyCard({
+  id,
   image,
   title,
   location,
@@ -17,8 +20,17 @@ export function PropertyCard({
   reviewCount,
   isPositive = true
 }: PropertyCardProps) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/properties/${id}`);
+  };
+
   return (
-    <div className="rounded-2xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:shadow-md">
+    <div 
+      className="rounded-2xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:shadow-md cursor-pointer hover:border-primary/50"
+      onClick={handleClick}
+    >
       <img
         src={image}
         alt={title}

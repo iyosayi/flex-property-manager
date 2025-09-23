@@ -136,7 +136,7 @@ export function Dashboard() {
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     {topRatedProperties.map((property, index) => (
-                      <PropertyCard key={index} {...property} />
+                      <PropertyCard key={property.id} {...property} />
                     ))}
                   </div>
                 </div>
@@ -159,7 +159,7 @@ export function Dashboard() {
                   </div>
                   <div className="grid gap-4 sm:grid-cols-2">
                     {belowThreeStarProperties.map((property, index) => (
-                      <PropertyCard key={index} {...property} />
+                      <PropertyCard key={property.id} {...property} />
                     ))}
                   </div>
                 </div>

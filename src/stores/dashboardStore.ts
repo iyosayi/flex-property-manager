@@ -85,6 +85,7 @@ export interface ApiOverviewResponse {
 
 // Component Props Types (what components expect)
 export interface PropertyCardProps {
+  id: string;
   image: string;
   title: string;
   location: string;
@@ -149,6 +150,7 @@ export interface DashboardState {
 
 // Data transformation helpers
 const transformApiProperty = (apiProperty: ApiProperty): PropertyCardProps => ({
+  id: apiProperty.id,
   image: apiProperty.propertyImageSrc,
   title: apiProperty.propertyName,
   location: apiProperty.propertyLocation,
