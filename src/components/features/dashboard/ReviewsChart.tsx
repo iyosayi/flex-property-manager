@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
-import { DateRangeSelect } from "./DateRangeSelect";
+import { DateRangeSelect } from "@/components/features/booking/DateRangeSelect";
 
 interface ChartData {
   month: string;

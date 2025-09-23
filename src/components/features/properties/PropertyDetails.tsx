@@ -12,9 +12,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Progress } from "@/components/ui/progress";
 import { usePropertyDetailStore, useReviewStatusStore } from "@/stores";
-import apartment1 from "@/assets/apartment-1.jpg";
-import apartment2 from "@/assets/apartment-2.jpg";
-import apartment3 from "@/assets/apartment-3.jpg";
+import apartment1 from "@/assets/images/properties/apartment-1.jpg";
+import apartment2 from "@/assets/images/properties/apartment-2.jpg";
+import apartment3 from "@/assets/images/properties/apartment-3.jpg";
 
 const galleryImages = [
   { src: apartment1, alt: "Bright living room" },

@@ -3,6 +3,7 @@ export { useDashboardStore } from './dashboardStore';
 export { usePropertiesStore } from './propertiesStore';
 export { usePropertyDetailStore } from './propertyDetailStore';
 export { useReviewStatusStore } from './reviewStatusStore';
+export { useReviewsStore } from './reviewsStore';
 
 export type { 
   ApiOverviewResponse,

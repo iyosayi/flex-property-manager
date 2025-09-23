@@ -9,11 +9,11 @@ import {
   MapPin,
   Star
 } from "lucide-react";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "@/components/common/SearchBar";
 import { usePropertiesStore } from "@/stores";
-import apartment1 from "@/assets/apartment-1.jpg";
-import apartment2 from "@/assets/apartment-2.jpg";
-import apartment3 from "@/assets/apartment-3.jpg";
+import apartment1 from "@/assets/images/properties/apartment-1.jpg";
+import apartment2 from "@/assets/images/properties/apartment-2.jpg";
+import apartment3 from "@/assets/images/properties/apartment-3.jpg";
 
 const timeRanges = ["14 days", "30 days", "3M", "6M", "1Y"];
 

@@ -4,12 +4,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Sidebar } from "@/components/Sidebar";
-import { Dashboard } from "@/components/Dashboard";
-import { RightSidebar } from "@/components/RightSidebar";
-import { AllProperties } from "@/components/AllProperties";
-import { PropertyDetails } from "@/components/PropertyDetails";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { Dashboard } from "@/components/features/dashboard/Dashboard";
+import { RightSidebar } from "@/components/layout/RightSidebar";
+import { AllProperties } from "@/components/features/properties/AllProperties";
+import { PropertyDetails } from "@/components/features/properties/PropertyDetails";
 import NotFound from "./pages/NotFound";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
               </AppLayout>
             )}
           />
+          <Route path="/website" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -1,5 +1,5 @@
 import { ChevronDown } from "lucide-react";
-import apartmentCollage1 from "@/assets/apartment-collage-1.jpg";
+import apartmentCollage1 from "@/assets/images/properties/apartment-collage-1.jpg";
 
 const topMentions = ["Cleanliness", "Great locations", "Cleanliness"];
 
