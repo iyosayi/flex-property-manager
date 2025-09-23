@@ -30,19 +30,42 @@ export function Dashboard() {
     setSelectedGuestMentionCategory
   } = useDashboardStore();
 
+  // Independent date range states for each component
+  const [topRatedDateRange, setTopRatedDateRange] = React.useState("14d");
+  const [belowThreeStarDateRange, setBelowThreeStarDateRange] = React.useState("14d");
+  const [reviewsChartDateRange, setReviewsChartDateRange] = React.useState("14d");
+  const [guestMentionsDateRange, setGuestMentionsDateRange] = React.useState("14d");
+
   // Fetch data on component mount and when date range changes
   React.useEffect(() => {
     fetchOverviewData(selectedDateRange);
   }, [fetchOverviewData, selectedDateRange]);
 
-  // Handle date range changes
-  const handleDateRangeChange = (newRange: string) => {
+  // Handle date range changes for main overview
+  const handleMainDateRangeChange = (newRange: string) => {
     setSelectedDateRange(newRange);
+  };
+
+  // Handle date range changes for individual components
+  const handleTopRatedDateRangeChange = (newRange: string) => {
+    setTopRatedDateRange(newRange);
+  };
+
+  const handleBelowThreeStarDateRangeChange = (newRange: string) => {
+    setBelowThreeStarDateRange(newRange);
+  };
+
+  const handleReviewsChartDateRangeChange = (newRange: string) => {
+    setReviewsChartDateRange(newRange);
+  };
+
+  const handleGuestMentionsDateRangeChange = (newRange: string) => {
+    setGuestMentionsDateRange(newRange);
   };
 
   if (error) {
     return (
-      <div className="flex-1 h-full overflow-hidden bg-muted/10">
+      <div className="flex-1 h-full overflow-hidden">
         <div className="flex h-full items-center justify-center">
           <div className="text-center">
             <h2 className="text-xl font-semibold text-foreground mb-2">Error Loading Dashboard</h2>
@@ -60,7 +83,7 @@ export function Dashboard() {
   }
 
   return (
-    <div className="flex-1 h-full overflow-hidden bg-muted/10">
+    <div className="flex-1 h-full overflow-hidden">
       <div className="flex h-full flex-col">
         <div className="flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
@@ -68,23 +91,21 @@ export function Dashboard() {
               <div className="flex flex-col gap-8">
                 <div className="flex flex-wrap items-start justify-between gap-6">
                   <div>
-                    <h1 className="text-3xl font-semibold text-foreground">Overview</h1>
-                    <p className="text-sm text-muted-foreground">
+                    <h1 className="text-3xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Overview</h1>
+                    <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                       See how your properties are being reviewed
                     </p>
                   </div>
                   <div className="flex items-center gap-3">
                     <DateRangeSelect
                       value={selectedDateRange}
-                      onChange={handleDateRangeChange}
+                      onChange={handleMainDateRangeChange}
                       disabled={isLoading}
                       className="rounded-full border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground"
                     />
-                    <ArrowRight className="h-5 w-5 text-muted-foreground" />
                   </div>
                 </div>
 
-                <SearchBar />
 
                 <div className="grid gap-5 md:grid-cols-2">
                   <StatCard
@@ -105,7 +126,7 @@ export function Dashboard() {
 
             <section className="rounded-3xl border border-border bg-background px-8 py-7 shadow-sm">
               <div className="flex items-center justify-between gap-4">
-                <h2 className="text-xl font-semibold text-foreground">Recent reviews</h2>
+                <h2 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Recent reviews</h2>
                 <button className="flex items-center gap-2 rounded-full border border-border px-4 py-1.5 text-xs font-medium text-primary hover:bg-primary/10">
                   <span>See more</span>
                   <ArrowRight className="h-4 w-4" />
@@ -123,14 +144,14 @@ export function Dashboard() {
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                      <h2 className="text-xl font-semibold text-foreground">Top rated properties</h2>
-                      <p className="text-sm text-muted-foreground">
+                      <h2 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Top rated properties</h2>
+                      <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                         Properties with the highest ratings
                       </p>
                     </div>
                     <DateRangeSelect
-                      value={selectedDateRange}
-                      onChange={handleDateRangeChange}
+                      value={topRatedDateRange}
+                      onChange={handleTopRatedDateRangeChange}
                       disabled={isLoading}
                     />
                   </div>
@@ -146,14 +167,14 @@ export function Dashboard() {
                 <div className="space-y-6">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                      <h2 className="text-xl font-semibold text-foreground">Below 3 star</h2>
-                      <p className="text-sm text-muted-foreground">
+                      <h2 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Below 3 star</h2>
+                      <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                         Properties with the lowest ratings
                       </p>
                     </div>
                     <DateRangeSelect
-                      value={selectedDateRange}
-                      onChange={handleDateRangeChange}
+                      value={belowThreeStarDateRange}
+                      onChange={handleBelowThreeStarDateRangeChange}
                       disabled={isLoading}
                     />
                   </div>
@@ -168,22 +189,12 @@ export function Dashboard() {
 
             <section className="grid gap-6 lg:grid-cols-2">
               <ReviewsChart 
-                data={reviewsChartData}
-                summary={apiData?.data.reviewsChart.summary.text}
-                location={apiData?.data.reviewsChart.summary.location}
-                period={apiData?.data.reviewsChart.summary.period}
-                selectedDateRange={selectedDateRange}
-                onDateRangeChange={handleDateRangeChange}
-                isLoading={isLoading}
+                selectedDateRange={reviewsChartDateRange}
+                onDateRangeChange={handleReviewsChartDateRangeChange}
               />
               <GuestMentionsChart 
-                data={guestMentionsData}
-                categories={guestMentionCategories}
-                selectedCategory={selectedGuestMentionCategory}
-                onCategoryChange={setSelectedGuestMentionCategory}
-                selectedDateRange={selectedDateRange}
-                onDateRangeChange={handleDateRangeChange}
-                isLoading={isLoading}
+                selectedDateRange={guestMentionsDateRange}
+                onDateRangeChange={handleGuestMentionsDateRangeChange}
               />
             </section>
           </div>

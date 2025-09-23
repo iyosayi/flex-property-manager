@@ -265,7 +265,7 @@ export function AllProperties() {
 
   if (error) {
     return (
-      <div className="flex h-full flex-1 overflow-hidden bg-muted/10">
+      <div className="flex h-full flex-1 overflow-hidden">
         <div className="flex h-full flex-1 flex-col">
           <div className="flex-1 overflow-y-auto">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
@@ -289,7 +289,7 @@ export function AllProperties() {
   }
 
   return (
-    <div className="flex h-full flex-1 overflow-hidden bg-muted/10">
+    <div className="flex h-full flex-1 overflow-hidden">
       <div className="flex h-full flex-1 flex-col">
         <div className="flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
@@ -298,8 +298,8 @@ export function AllProperties() {
                 <div className="flex flex-wrap items-start justify-between gap-6">
                   <div className="space-y-2">
                     <p className="text-sm font-medium text-muted-foreground">All properties</p>
-                    <h1 className="text-3xl font-semibold text-foreground">See reviews for all properties</h1>
-                    <p className="text-sm text-muted-foreground">
+                    <h1 className="text-3xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>See reviews for all properties</h1>
+                    <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                       Quickly compare guest sentiment, key highlights, and performance across your portfolio.
                     </p>
                   </div>
@@ -325,7 +325,7 @@ export function AllProperties() {
                   </div>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
+                {/* <div className="flex flex-wrap items-center gap-2">
                   {timeRanges.map((range) => {
                     // Map display range to API dateRange value
                     const rangeMap: Record<string, string> = {
@@ -355,7 +355,7 @@ export function AllProperties() {
                       </button>
                     );
                   })}
-                </div>
+                </div> */}
 
                 <div className="grid gap-5">
                   <SearchBar 
@@ -406,8 +406,8 @@ export function AllProperties() {
 
                  <div className="space-y-5">
                    <div className="flex items-center justify-between">
-                     <h2 className="text-lg font-semibold text-foreground">{displayProperties.length} properties</h2>
-                     <span className="text-xs text-muted-foreground">Filtered by {activeRange}</span>
+                     <h2 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>{displayProperties.length} properties</h2>
+                     {/* <span className="text-xs text-muted-foreground">Filtered by {activeRange}</span> */}
                    </div>
 
                    {isLoading ? (
@@ -437,8 +437,8 @@ export function AllProperties() {
                           <div className="flex flex-1 flex-col gap-5 p-5">
                             <div className="space-y-3">
                               <div className="space-y-1.5">
-                                <h3 className="text-lg font-semibold text-foreground">{property.name}</h3>
-                                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>{property.name}</h3>
+                                <div className="flex items-center gap-1 text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                                   <MapPin className="h-3.5 w-3.5" />
                                   <span>{property.location}</span>
                                 </div>
@@ -506,8 +506,8 @@ export function AllProperties() {
                             <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
                               <div className="space-y-3">
                                 <div className="space-y-1.5">
-                                  <h3 className="text-lg font-semibold text-foreground">{property.name}</h3>
-                                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                  <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>{property.name}</h3>
+                                  <div className="flex items-center gap-1 text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                                     <MapPin className="h-3.5 w-3.5" />
                                     <span>{property.location}</span>
                                   </div>

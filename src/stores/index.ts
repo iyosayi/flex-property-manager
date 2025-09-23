@@ -5,6 +5,9 @@ export { usePropertyDetailStore } from './propertyDetailStore';
 export { useReviewStatusStore } from './reviewStatusStore';
 export { useReviewsStore } from './reviewsStore';
 export { useUIStore } from './uiStore';
+export { useReviewsChartStore } from './reviewsChartStore';
+export { useGuestMentionsStore } from './guestMentionsStore';
+export { usePerformanceStore } from './performanceStore';
 
 export type { 
   ApiOverviewResponse,
@@ -43,3 +46,31 @@ export type {
 export type {
   UIState
 } from './uiStore';
+
+export type {
+  ApiReviewsChartResponse,
+  ApiReviewsChartData,
+  ApiReviewsChartSummary,
+  ApiReviewsChartFilters,
+  ChartData,
+  ReviewsChartState
+} from './reviewsChartStore';
+
+export type {
+  ApiGuestMentionsResponse,
+  ApiLocationData,
+  ApiGuestMentionsSummary,
+  ApiGuestMentionsFilters,
+  GuestMentionData,
+  GuestMentionsState
+} from './guestMentionsStore';
+
+export type {
+  ApiPerformanceResponse,
+  ApiGoodReviews,
+  ApiBadReviews,
+  ApiSummary,
+  ApiFilters,
+  ApiMention,
+  PerformanceState
+} from './performanceStore';

@@ -66,7 +66,7 @@ export function PropertyDetails() {
 
   if (isLoading) {
     return (
-      <div className="flex h-full items-center justify-center bg-muted/10">
+      <div className="flex h-full items-center justify-center">
         <div className="text-center">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
           <p className="text-sm text-muted-foreground">Loading property details...</p>
@@ -77,7 +77,7 @@ export function PropertyDetails() {
 
   if (error || !property) {
     return (
-      <div className="flex h-full items-center justify-center bg-muted/10">
+      <div className="flex h-full items-center justify-center">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-foreground mb-2">Error Loading Property</h2>
           <p className="text-muted-foreground mb-4">{error || 'Property not found'}</p>
@@ -160,7 +160,7 @@ export function PropertyDetails() {
   }));
 
   return (
-    <div className="flex h-full flex-1 overflow-hidden bg-muted/10">
+    <div className="flex h-full flex-1 overflow-hidden">
       <div className="flex h-full flex-1 flex-col">
         <div className="flex-1 overflow-y-auto">
           <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
@@ -207,7 +207,7 @@ export function PropertyDetails() {
                       <div className="flex flex-wrap items-start justify-between gap-4">
                         <div className="space-y-3">
                           <div className="flex flex-wrap items-center gap-3">
-                            <h1 className="text-3xl font-semibold text-foreground">
+                            <h1 className="text-3xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>
                               {property.name}
                             </h1>
                             {property.badge.label && (
@@ -222,7 +222,7 @@ export function PropertyDetails() {
                               </span>
                             )}
                           </div>
-                          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                             <span className="inline-flex items-center gap-2">
                               <MapPin className="h-4 w-4 text-primary" />
                               {property.location}
@@ -241,14 +241,14 @@ export function PropertyDetails() {
                           </button>
                         </div>
                       </div>
-                      <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+                      <p className="max-w-xl text-sm leading-relaxed text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
                         {property.description}
                       </p>
                     </div>
 
                     <div className="rounded-2xl border border-border bg-muted/40 p-5">
                       <div className="flex items-center justify-between">
-                        <h2 className="text-sm font-semibold text-foreground">Worthy mentions</h2>
+                        <h2 className="text-sm font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Worthy mentions</h2>
                         <span className="text-xs text-muted-foreground">Last 30 days</span>
                       </div>
                       <div className="mt-4 grid gap-3">
@@ -270,7 +270,7 @@ export function PropertyDetails() {
                 <div className="grid gap-5 md:grid-cols-2">
                   <div className="rounded-3xl border border-border bg-background p-6 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-foreground">Top components</h3>
+                      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Top components</h3>
                       <span className="text-xs text-muted-foreground">Highlights guests love</span>
                     </div>
                     <div className="mt-5 space-y-4">
@@ -293,7 +293,7 @@ export function PropertyDetails() {
 
                   <div className="rounded-3xl border border-border bg-background p-6 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-foreground">Frequent complaints</h3>
+                      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Frequent complaints</h3>
                       <span className="text-xs text-muted-foreground">Needs attention</span>
                     </div>
                     <div className="mt-5 space-y-4">
@@ -313,8 +313,8 @@ export function PropertyDetails() {
                 <section className="rounded-3xl border border-border bg-background p-6 shadow-sm sm:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <div>
-                      <h2 className="text-xl font-semibold text-foreground">Recent reviews</h2>
-                      <p className="text-sm text-muted-foreground">Read what guests are highlighting this month</p>
+                      <h2 className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Recent reviews</h2>
+                      <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>Read what guests are highlighting this month</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs">
                       <button className="rounded-full border border-border px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -430,7 +430,7 @@ export function PropertyDetails() {
 
                   <div className="rounded-3xl border border-border bg-background p-6 shadow-sm">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-foreground">Rating health</h3>
+                      <h3 className="text-lg font-semibold text-foreground" style={{ fontFamily: 'Helvetica Neue, Arial, sans-serif' }}>Rating health</h3>
                       <span className="text-xs text-muted-foreground">This quarter</span>
                     </div>
                     <div className="mt-5 space-y-4">

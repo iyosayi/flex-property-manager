@@ -40,7 +40,7 @@ const AppLayout = ({
   }, [handleResize]);
   
   return (
-    <div className="flex h-screen w-full overflow-hidden bg-muted/40">
+    <div className="flex h-screen w-full overflow-hidden" style={{ backgroundColor: 'rgb(255, 253, 246)' }}>
       <Sidebar />
       {children}
       {showRightSidebar ? <RightSidebar /> : null}

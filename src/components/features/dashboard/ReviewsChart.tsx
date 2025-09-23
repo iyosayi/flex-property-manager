@@ -1,25 +1,44 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
 import { DateRangeSelect } from "@/components/features/booking/DateRangeSelect";
-
-interface ChartData {
-  month: string;
-  great: number;
-  neutral: number;
-  bad: number;
-}
+import { useReviewsChartStore } from "@/stores";
+import { useEffect } from "react";
 
 interface ReviewsChartProps {
-  data?: ChartData[];
-  summary?: string;
-  location?: string;
-  period?: string;
+  // Props are now optional since we're using the store
   selectedDateRange?: string;
   onDateRangeChange?: (dateRange: string) => void;
-  isLoading?: boolean;
 }
 
 export function ReviewsChart({ 
-  data = [
+  selectedDateRange,
+  onDateRangeChange
+}: ReviewsChartProps) {
+  const {
+    chartData,
+    summary,
+    filters,
+    isLoading,
+    error,
+    fetchReviewsChartData,
+    setSelectedDateRange
+  } = useReviewsChartStore();
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchReviewsChartData(selectedDateRange || '14d');
+  }, [fetchReviewsChartData, selectedDateRange]);
+
+  // Handle date range changes
+  const handleDateRangeChange = (newRange: string) => {
+    if (onDateRangeChange) {
+      onDateRangeChange(newRange);
+    } else {
+      setSelectedDateRange(newRange);
+    }
+  };
+
+  // Fallback data for when API is loading or fails
+  const fallbackData = [
     { month: "J", great: 150, neutral: 350, bad: 200 },
     { month: "F", great: 280, neutral: 300, bad: 150 },
     { month: "M", great: 450, neutral: 280, bad: 120 },
@@ -32,36 +51,23 @@ export function ReviewsChart({
     { month: "O", great: 680, neutral: 380, bad: 320 },
     { month: "N", great: 620, neutral: 420, bad: 280 },
     { month: "D", great: 580, neutral: 480, bad: 350 },
-  ],
-  summary = "Consistently neutral reviews over the last 3 months for properties in London",
-  location = "London",
-  period = "last 3 months",
-  selectedDateRange = "14d",
-  onDateRangeChange,
-  isLoading = false
-}: ReviewsChartProps) {
+  ];
+
+  const displayData = chartData.length > 0 ? chartData : fallbackData;
+  const displaySummary = summary?.text || "Consistently neutral reviews over the last 3 months for properties in London";
   return (
     <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h3 className="text-lg font-semibold text-foreground">Reviews</h3>
-          <p className="text-sm text-muted-foreground">Properties with the highest ratings</p>
+          <h3 className="text-lg font-semibold text-foreground">Review Trends</h3>
+          <p className="text-sm text-muted-foreground">Monthly review distribution over time</p>
         </div>
         <div className="flex items-center gap-3">
-          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
-            <option>Locations</option>
-          </select>
-          {onDateRangeChange ? (
-            <DateRangeSelect
-              value={selectedDateRange}
-              onChange={onDateRangeChange}
-              disabled={isLoading}
-            />
-          ) : (
-            <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
-              <option>Date range</option>
-            </select>
-          )}
+          <DateRangeSelect
+            value={selectedDateRange || '14d'}
+            onChange={handleDateRangeChange}
+            disabled={isLoading}
+          />
         </div>
       </div>
 
@@ -83,7 +89,7 @@ export function ReviewsChart({
 
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
+          <LineChart data={displayData}>
             <XAxis
               dataKey="month"
               axisLine={false}
@@ -121,7 +127,7 @@ export function ReviewsChart({
       </div>
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
-        Consistently neutral reviews over the last 3 months for properties in London
+        {displaySummary}
       </p>
     </div>
   );
