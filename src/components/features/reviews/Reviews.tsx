@@ -1,6 +1,6 @@
 import React from "react";
-import { StarIcon } from "./icons";
-import { ChevronRightIcon } from "./amenityIcons";
+import { StarIcon } from "@/components/common/icons";
+import { ChevronRightIcon } from "@/components/icons";
 import { useReviewsStore } from "@/stores";
 
 const Reviews = () => {

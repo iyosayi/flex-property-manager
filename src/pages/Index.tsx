@@ -1,13 +1,13 @@
-import Header from "@/components/Header";
-import PropertyGallery from "@/components/PropertiesGallery";
-import PropertyDetails from "@/components/PropertyDetailsReplica";
-import Amenities from "@/components/Amenities";
-import BookingWidget from "@/components/BookingWidget";
-import StayPolicies from "@/components/StaysPolicy";
-import LocationMap from "@/components/LocationMap";
-import Footer from "@/components/Footer";
-import AboutProperty from "@/components/AboutProperty";
-import Reviews from "@/components/Reviews";
+import Header from "@/components/layout/Header";
+import PropertyGallery from "@/components/features/properties/PropertiesGallery";
+import PropertyDetails from "@/components/features/properties/PropertyDetailsReplica";
+import Amenities from "@/components/features/properties/Amenities";
+import BookingWidget from "@/components/features/booking/BookingWidget";
+import StayPolicies from "@/components/features/booking/StaysPolicy";
+import LocationMap from "@/components/features/properties/LocationMap";
+import Footer from "@/components/layout/Footer";
+import AboutProperty from "@/components/features/properties/AboutProperty";
+import Reviews from "@/components/features/reviews/Reviews";
 
 const Index = () => {
   return (

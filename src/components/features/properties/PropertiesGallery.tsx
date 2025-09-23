@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
-import mainImage from "@/assets/property-main.jpeg";
-import bedroom1 from "@/assets/property-bedroom1.jpeg";
-import bedroom2 from "@/assets/property-bedroom2.jpeg";
-import bathroom from "@/assets/property-bathroom.jpeg";
-import kitchen from "@/assets/property-kitchen.jpeg";
+import mainImage from "@/assets/images/properties/property-main.jpeg";
+import bedroom1 from "@/assets/images/properties/property-bedroom1.jpeg";
+import bedroom2 from "@/assets/images/properties/property-bedroom2.jpeg";
+import bathroom from "@/assets/images/properties/property-bathroom.jpeg";
+import kitchen from "@/assets/images/properties/property-kitchen.jpeg";
 
 const PropertyGallery = () => {
   const thumbnailImages = [bedroom1, bedroom2, bathroom, kitchen];

@@ -5,7 +5,7 @@ import {
   PawPrintIcon, 
   PartyPopperIcon, 
   CalendarClockIcon 
-} from "./policyIcons";
+} from "@/components/icons";
 
 const StayPolicies = () => {
   return (

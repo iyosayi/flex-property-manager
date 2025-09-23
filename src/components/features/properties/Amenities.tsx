@@ -9,7 +9,7 @@ import {
   WindIcon, 
   ThermometerIcon, 
   ChevronRightIcon 
-} from "./amenityIcons";
+} from "@/components/icons";
 
 const Amenities = () => {
   return (

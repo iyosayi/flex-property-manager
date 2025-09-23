@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Facebook, Instagram, Linkedin } from "lucide-react";
 import { 
   ChevronDownIcon, 
   SendIcon, 
@@ -10,111 +6,10 @@ import {
   LinkedinIcon, 
   HeadphonesIcon, 
   MailIcon 
-} from "./footerIcons";
+} from "@/components/icons/index";
 
 const Footer = () => {
   return (
-    // <footer className="bg-primary text-primary-foreground">
-    //   <div className="container mx-auto px-6 py-12">
-    //     <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
-    //       {/* Newsletter Signup */}
-    //       <div className="md:col-span-2">
-    //         <h3 className="text-lg font-medium mb-4">Join The Flex</h3>
-    //         <p className="text-sm opacity-90 mb-4">
-    //           Sign up now and stay up to date on our latest news and exclusive deals including 5% off your first stay!
-    //         </p>
-    //         <div className="space-y-3">
-    //           <div className="grid grid-cols-2 gap-2">
-    //             <Input 
-    //               placeholder="First name" 
-    //               className="bg-background text-foreground border-border"
-    //             />
-    //             <Input 
-    //               placeholder="Last name" 
-    //               className="bg-background text-foreground border-border"
-    //             />
-    //           </div>
-    //           <Input 
-    //             placeholder="Email address" 
-    //             className="bg-background text-foreground border-border"
-    //           />
-    //           <div className="flex gap-2">
-    //             <Select>
-    //               <SelectTrigger className="w-24 bg-background text-foreground border-border">
-    //                 <SelectValue placeholder="+44" />
-    //               </SelectTrigger>
-    //               <SelectContent>
-    //                 <SelectItem value="+44">+44</SelectItem>
-    //                 <SelectItem value="+1">+1</SelectItem>
-    //                 <SelectItem value="+33">+33</SelectItem>
-    //               </SelectContent>
-    //             </Select>
-    //             <Input 
-    //               placeholder="Phone number" 
-    //               className="flex-1 bg-background text-foreground border-border"
-    //             />
-    //           </div>
-    //           <Button className="w-full bg-background text-foreground hover:bg-muted">
-    //             Subscribe
-    //           </Button>
-    //         </div>
-    //       </div>
-
-    //       {/* The Flex */}
-    //       <div>
-    //         <h4 className="font-medium mb-4">The Flex</h4>
-    //         <ul className="space-y-2 text-sm opacity-90">
-    //           <li>Professional property management services for landlords, flexible corporate lets for businesses and quality accommodation for long-term guests</li>
-    //           <li className="pt-2">
-    //             <div className="flex space-x-2">
-    //               <Facebook className="h-4 w-4" />
-    //               <Instagram className="h-4 w-4" />
-    //               <Linkedin className="h-4 w-4" />
-    //             </div>
-    //           </li>
-    //         </ul>
-    //       </div>
-
-    //       {/* Quick Links */}
-    //       <div>
-    //         <h4 className="font-medium mb-4">Quick Links</h4>
-    //         <ul className="space-y-2 text-sm opacity-90">
-    //           <li><a href="#" className="hover:opacity-100">Blog</a></li>
-    //           <li><a href="#" className="hover:opacity-100">Careers</a></li>
-    //           <li><a href="#" className="hover:opacity-100">Terms & Conditions</a></li>
-    //           <li><a href="#" className="hover:opacity-100">Privacy Policy</a></li>
-    //         </ul>
-    //       </div>
-
-    //       {/* Contact */}
-    //       <div>
-    //         <h4 className="font-medium mb-4">Contact Us</h4>
-    //         <div className="space-y-2 text-sm opacity-90">
-    //           <div>
-    //             <p className="font-medium">Locations</p>
-    //             <p>LONDON</p>
-    //             <p>PARIS</p>
-    //             <p>ALGIERS</p>
-    //           </div>
-    //           <div className="pt-2">
-    //             <p className="font-medium">📞 Support Numbers</p>
-    //             <p>United Kingdom</p>
-    //             <p>+44 77 2794 6194</p>
-    //             <p>France</p>
-    //             <p>+33 757 62 22 41</p>
-    //             <p>+33 634 49 42 27</p>
-    //             <p>📧 info@theflex.global</p>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-
-    //     <div className="border-t border-primary-foreground/20 mt-8 pt-4">
-    //       <p className="text-xs opacity-75">© 2025 The Flex. All rights reserved.</p>
-    //     </div>
-    //   </div>
-    // </footer>
-
     <footer className="bg-[#284E4C] text-white font-sans mt-0">
       <div className="container mx-auto px-4 py-16 font-sans">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 mb-12">

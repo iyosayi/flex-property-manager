@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Building2Icon, ChevronDownIcon, InfoIcon, BookOpenIcon, MailIcon, MenuIcon } from "./headerIcons";
+import { Building2Icon, ChevronDownIcon, InfoIcon, BookOpenIcon, MailIcon, MenuIcon } from "@/components/icons/index";
 
 const Header = () => {
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);

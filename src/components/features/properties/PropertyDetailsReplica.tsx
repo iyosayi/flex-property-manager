@@ -1,5 +1,5 @@
 import { Users, Bed, Bath, Home } from "lucide-react";
-import { UsersIcon, BedIcon, BathIcon, HouseIcon } from "./icons";
+import { UsersIcon, BedIcon, BathIcon, HouseIcon } from "@/components/common/icons";
 
 const PropertyDetails = () => {
   return (

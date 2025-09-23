@@ -7,7 +7,7 @@ import {
   CalendarCheckIcon,
   MessageCircleIcon,
   ShieldIcon
-} from "./bookingIcons";
+} from "@/components/icons/index";
 
 const BookingWidget = () => {
   return (

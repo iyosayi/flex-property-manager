@@ -1,5 +1,5 @@
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import { DateRangeSelect } from "./DateRangeSelect";
+import { DateRangeSelect } from "@/components/features/booking/DateRangeSelect";
 
 interface GuestMentionData {
   location: string;

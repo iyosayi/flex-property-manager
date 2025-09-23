@@ -1,12 +1,12 @@
 import React from "react";
 import { ChevronDown, ArrowRight } from "lucide-react";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "@/components/common/SearchBar";
 import { StatCard } from "./StatCard";
-import { ReviewCard } from "./ReviewCard";
-import { PropertyCard } from "./PropertyCard";
+import { ReviewCard } from "@/components/features/reviews/ReviewCard";
+import { PropertyCard } from "@/components/features/properties/PropertyCard";
 import { ReviewsChart } from "./ReviewsChart";
 import { GuestMentionsChart } from "./GuestMentionsChart";
-import { DateRangeSelect, getDateRangeLabel } from "./DateRangeSelect";
+import { DateRangeSelect, getDateRangeLabel } from "@/components/features/booking/DateRangeSelect";
 import { useDashboardStore } from "@/stores";
 
 // Data is now fetched from the API via Zustand store
