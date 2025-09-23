@@ -10,7 +10,7 @@ import { RightSidebar } from "@/components/RightSidebar";
 import { AllProperties } from "@/components/AllProperties";
 import { PropertyDetails } from "@/components/PropertyDetails";
 import NotFound from "./pages/NotFound";
-import HackneyListing from "./pages/HackneyListing";
+import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
 
@@ -52,7 +52,7 @@ const App = () => (
               </AppLayout>
             )}
           />
-          <Route path="/stays/deluxe-hackney" element={<HackneyListing />} />
+          <Route path="/website" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
