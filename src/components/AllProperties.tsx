@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowDownRight,
@@ -10,24 +10,56 @@ import {
   Star
 } from "lucide-react";
 import { SearchBar } from "./SearchBar";
+import { usePropertiesStore } from "@/stores";
 import apartment1 from "@/assets/apartment-1.jpg";
 import apartment2 from "@/assets/apartment-2.jpg";
 import apartment3 from "@/assets/apartment-3.jpg";
 
 const timeRanges = ["14 days", "30 days", "3M", "6M", "1Y"];
 
+const filterOptions = {
+  Rating: [
+    { value: "all", label: "All ratings" },
+    { value: "5", label: "5 stars" },
+    { value: "4", label: "4 stars" },
+    { value: "3", label: "3 stars" },
+    { value: "2", label: "2 stars" },
+    { value: "1", label: "1 star" }
+  ],
+  Category: [
+    { value: "all", label: "All categories" },
+    { value: "cleanliness", label: "Cleanliness" },
+    { value: "communication", label: "Communication" },
+    { value: "respect_house_rules", label: "Respect house rules" }
+  ],
+  Channel: [
+    { value: "all", label: "All channels" },
+    { value: "Airbnb", label: "Airbnb" },
+    { value: "booking.com", label: "Booking.com" },
+    { value: "homeaway", label: "HomeAway" },
+    { value: "expedia", label: "Expedia" },
+    { value: "marriott", label: "Marriott" }
+  ],
+  Time: [
+    { value: "7d", label: "Last 7 days" },
+    { value: "14d", label: "Last 14 days" },
+    { value: "30d", label: "Last 30 days" },
+    { value: "90d", label: "Last 90 days" },
+    { value: "1y", label: "Last 1 year" }
+  ]
+};
+
 const filters = [
-  "Location",
   "Rating",
+  "Category", 
   "Channel",
-  "Length of stay",
-  "Category"
+  "Time",
 ];
 
 type PropertyBadgeTone = "positive" | "primary" | "warning";
 
 type Property = {
-  id: number;
+  id: string;
   image: string;
   name: string;
   location: string;
@@ -46,7 +78,7 @@ type Property = {
 
 const properties: Property[] = [
   {
-    id: 1,
+    id: "1",
     image: apartment1,
     name: "Modern 1 Bed Apartment in Wimbledon",
     location: "Wimbledon, London",
@@ -64,7 +96,7 @@ const properties: Property[] = [
     badPercentage: 5
   },
   {
-    id: 2,
+    id: "2",
     image: apartment2,
     name: "Stylish Loft near Notting Hill",
     location: "Notting Hill, London",
@@ -82,7 +114,7 @@ const properties: Property[] = [
     badPercentage: 8
   },
   {
-    id: 3,
+    id: "3",
     image: apartment3,
     name: "Sunny 2 Bed Apartment in Kensington",
     location: "Kensington, London",
@@ -100,7 +132,7 @@ const properties: Property[] = [
     badPercentage: 11
   },
   {
-    id: 4,
+    id: "4",
     image: apartment1,
     name: "Calm Studio next to Hyde Park",
     location: "Hyde Park, London",
@@ -131,8 +163,130 @@ const viewModes = [
 ];
 
 export function AllProperties() {
+  const {
+    properties: apiProperties,
+    isLoading,
+    error,
+    filters: storeFilters,
+    setFilters,
+    fetchProperties
+  } = usePropertiesStore();
+
   const [activeRange, setActiveRange] = useState<string>(timeRanges[0]);
   const [viewMode, setViewMode] = useState<(typeof viewModes)[number]["id"]>("grid");
+  
+  // Use store filters instead of local state
+  const selectedFilters = {
+    Rating: storeFilters.rating,
+    Category: storeFilters.category,
+    Channel: storeFilters.channel,
+    Time: storeFilters.dateRange
+  };
+  
+  // Dropdown states
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+
+  // Fetch data on component mount
+  useEffect(() => {
+    fetchProperties();
+  }, [fetchProperties]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the click is inside any dropdown
+      const isInsideDropdown = Object.values(dropdownRefs.current).some(ref => 
+        ref && ref.contains(event.target as Node)
+      );
+      
+      if (!isInsideDropdown) {
+        setOpenDropdown(null);
+      }
+    };
+
+    // Use a small delay to allow click events to fire first
+    const timeoutId = setTimeout(() => {
+      document.addEventListener('click', handleClickOutside);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    setOpenDropdown(null);
+    
+    // Map filter types to store filter keys
+    const filterMap: Record<string, keyof typeof storeFilters> = {
+      'Rating': 'rating',
+      'Category': 'category',
+      'Channel': 'channel',
+      'Time': 'dateRange'
+    };
+    
+    const storeKey = filterMap[filterType];
+    if (storeKey) {
+      setFilters({ [storeKey]: value });
+      console.log('Filter changed:', filterType, value);
+    }
+  };
+
+  const toggleDropdown = (filterType: string) => {
+    setOpenDropdown(openDropdown === filterType ? null : filterType);
+  };
+
+  const getSelectedLabel = (filterType: string) => {
+    const options = filterOptions[filterType as keyof typeof filterOptions];
+    const selected = selectedFilters[filterType as keyof typeof selectedFilters];
+    return options.find(option => option.value === selected)?.label || filterType;
+  };
+
+  // Transform API properties to match the existing structure
+  const transformedProperties: Property[] = apiProperties.map((apiProp) => ({
+    id: apiProp.id,
+    image: apiProp.image,
+    name: apiProp.name,
+    location: apiProp.location,
+    reviews: apiProp.totalReviews.toString(),
+    badge: {
+      label: apiProp.badge.label || "",
+      tone: apiProp.badge.tone || "primary"
+    },
+    mentions: apiProp.mentions,
+    goodPercentage: apiProp.goodPercentage,
+    badPercentage: apiProp.badPercentage
+  }));
+
+  // Use API data if available, otherwise fallback to hardcoded data
+  const displayProperties = transformedProperties.length > 0 ? transformedProperties : properties;
+
+  if (error) {
+    return (
+      <div className="flex h-full flex-1 overflow-hidden bg-muted/10">
+        <div className="flex h-full flex-1 flex-col">
+          <div className="flex-1 overflow-y-auto">
+            <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-8 sm:px-8 lg:px-10 lg:py-10">
+              <div className="flex items-center justify-center py-12">
+                <div className="text-center">
+                  <h2 className="text-xl font-semibold text-foreground mb-2">Error Loading Properties</h2>
+                  <p className="text-muted-foreground mb-4">{error}</p>
+                  <button 
+                    onClick={() => fetchProperties()}
+                    className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                  >
+                    Try Again
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-full flex-1 overflow-hidden bg-muted/10">
@@ -172,47 +326,102 @@ export function AllProperties() {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-2">
-                  {timeRanges.map((range) => (
-                    <button
-                      key={range}
-                      type="button"
-                      onClick={() => setActiveRange(range)}
-                      className={`rounded-full px-4 py-2 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${
-                        activeRange === range
-                          ? "bg-foreground text-background"
-                          : "bg-muted/60 text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      {range}
-                    </button>
-                  ))}
+                  {timeRanges.map((range) => {
+                    // Map display range to API dateRange value
+                    const rangeMap: Record<string, string> = {
+                      "14 days": "14d",
+                      "30 days": "30d", 
+                      "3M": "90d",
+                      "6M": "180d",
+                      "1Y": "1y"
+                    };
+                    const apiValue = rangeMap[range] || "14d";
+                    
+                    return (
+                      <button
+                        key={range}
+                        type="button"
+                        onClick={() => {
+                          setActiveRange(range);
+                          setFilters({ dateRange: apiValue });
+                        }}
+                        className={`rounded-full px-4 py-2 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${
+                          activeRange === range
+                            ? "bg-foreground text-background"
+                            : "bg-muted/60 text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {range}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <div className="grid gap-5">
-                  <SearchBar />
+                  <SearchBar 
+                    onSearchChange={(search) => setFilters({ search })}
+                    placeholder="Search properties..."
+                  />
                   <div className="flex flex-wrap items-center gap-2">
                     {filters.map((filter) => (
-                      <button
-                        key={filter}
-                        type="button"
-                        className="flex items-center gap-2 rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-foreground/40 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-                      >
-                        <span>{filter}</span>
-                        <ChevronDown className="h-3.5 w-3.5" />
-                      </button>
+                      <div key={filter} className="relative" ref={el => dropdownRefs.current[filter] = el}>
+                        <button
+                          key={`${filter}-${selectedFilters[filter as keyof typeof selectedFilters]}`}
+                          type="button"
+                          onClick={() => toggleDropdown(filter)}
+                          className={`flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${
+                            openDropdown === filter
+                              ? 'border-foreground/40 bg-background text-foreground'
+                              : 'border-border bg-background text-muted-foreground hover:border-foreground/40 hover:text-foreground'
+                          }`}
+                        >
+                          <span>{getSelectedLabel(filter)}</span>
+                          <ChevronDown className={`h-3.5 w-3.5 transition-transform ${openDropdown === filter ? 'rotate-180' : ''}`} />
+                        </button>
+                        
+                        {openDropdown === filter && (
+                          <div className="absolute top-full left-0 z-50 mt-1 min-w-[160px] rounded-lg border border-border bg-background shadow-lg">
+                            <div className="py-1">
+                              {filterOptions[filter as keyof typeof filterOptions].map((option) => (
+                                <button
+                                  key={option.value}
+                                  type="button"
+                                  onClick={() => handleFilterChange(filter, option.value)}
+                                  className={`w-full px-3 py-2 text-left text-xs transition-colors hover:bg-muted/50 ${
+                                    selectedFilters[filter as keyof typeof selectedFilters] === option.value
+                                      ? 'bg-primary/10 text-primary font-medium'
+                                      : 'text-foreground'
+                                  }`}
+                                >
+                                  {option.label}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="space-y-5">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-foreground">{properties.length} properties</h2>
-                    <span className="text-xs text-muted-foreground">Filtered by {activeRange}</span>
-                  </div>
+                 <div className="space-y-5">
+                   <div className="flex items-center justify-between">
+                     <h2 className="text-lg font-semibold text-foreground">{displayProperties.length} properties</h2>
+                     <span className="text-xs text-muted-foreground">Filtered by {activeRange}</span>
+                   </div>
 
-                  {viewMode === "grid" ? (
+                   {isLoading ? (
+                     <div className="flex items-center justify-center py-12">
+                       <div className="text-center">
+                         <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto mb-4"></div>
+                         <p className="text-sm text-muted-foreground">Loading properties...</p>
+                       </div>
+                     </div>
+                   ) : (
+                     <>
+                       {viewMode === "grid" ? (
                     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                      {properties.map((property) => (
+                      {displayProperties.map((property) => (
                         <Link
                           key={property.id}
                           to={`/properties/${property.id}`}
@@ -280,7 +489,7 @@ export function AllProperties() {
                     </div>
                   ) : (
                     <div className="space-y-4">
-                      {properties.map((property) => (
+                      {displayProperties.map((property) => (
                         <Link
                           key={property.id}
                           to={`/properties/${property.id}`}
@@ -347,6 +556,8 @@ export function AllProperties() {
                       ))}
                     </div>
                   )}
+                     </>
+                   )}
                 </div>
               </div>
             </section>

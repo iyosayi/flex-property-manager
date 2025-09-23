@@ -1,21 +1,35 @@
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { DateRangeSelect } from "./DateRangeSelect";
 
-const data = [
-  { location: "Paris", value: 600 },
-  { location: "London", value: 300 },
-  { location: "Lisbon", value: 700 },
-  { location: "Algiers", value: 500 },
-];
+interface GuestMentionData {
+  location: string;
+  value: number;
+}
 
-const mentionTags = [
-  { label: "Cleanliness", active: true },
-  { label: "Lack of cleanliness", active: false },
-  { label: "Noise complaints", active: false },
-  { label: "Maintenance problems", active: false },
-  { label: "Maintenance problems", active: false },
-];
+interface GuestMentionsChartProps {
+  data?: GuestMentionData[];
+  categories?: string[];
+  selectedCategory?: string;
+  onCategoryChange?: (category: string) => void;
+  selectedDateRange?: string;
+  onDateRangeChange?: (dateRange: string) => void;
+  isLoading?: boolean;
+}
 
-export function GuestMentionsChart() {
+export function GuestMentionsChart({ 
+  data = [
+    { location: "Paris", value: 600 },
+    { location: "London", value: 300 },
+    { location: "Lisbon", value: 700 },
+    { location: "Algiers", value: 500 },
+  ],
+  categories = ["Cleanliness", "Lack of cleanliness", "Noise complaints", "Maintenance problems"],
+  selectedCategory = "Cleanliness",
+  onCategoryChange,
+  selectedDateRange = "14d",
+  onDateRangeChange,
+  isLoading = false
+}: GuestMentionsChartProps) {
   return (
     <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -27,25 +41,34 @@ export function GuestMentionsChart() {
           <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Locations</option>
           </select>
-          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
-            <option>Date range</option>
-          </select>
+          {onDateRangeChange ? (
+            <DateRangeSelect
+              value={selectedDateRange}
+              onChange={onDateRangeChange}
+              disabled={isLoading}
+            />
+          ) : (
+            <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
+              <option>Date range</option>
+            </select>
+          )}
         </div>
       </div>
 
       {/* Tags */}
       <div className="mb-6 flex flex-wrap gap-2">
-        {mentionTags.map((tag, index) => (
+        {categories.map((category, index) => (
           <button
             key={index}
             className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
-              tag.active
+              category === selectedCategory
                 ? "border-transparent bg-primary text-primary-foreground"
                 : "border-border bg-background text-muted-foreground hover:border-primary/40"
             }`}
             type="button"
+            onClick={() => onCategoryChange?.(category)}
           >
-            {tag.label}
+            {category}
           </button>
         ))}
       </div>

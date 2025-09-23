@@ -1,21 +1,45 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Legend } from "recharts";
+import { DateRangeSelect } from "./DateRangeSelect";
 
-const data = [
-  { month: "J", great: 150, neutral: 350, bad: 200 },
-  { month: "F", great: 280, neutral: 300, bad: 150 },
-  { month: "M", great: 450, neutral: 280, bad: 120 },
-  { month: "A", great: 680, neutral: 320, bad: 180 },
-  { month: "M", great: 580, neutral: 400, bad: 250 },
-  { month: "J", great: 720, neutral: 380, bad: 200 },
-  { month: "J", great: 650, neutral: 420, bad: 280 },
-  { month: "A", great: 800, neutral: 350, bad: 150 },
-  { month: "S", great: 750, neutral: 300, bad: 200 },
-  { month: "O", great: 680, neutral: 380, bad: 320 },
-  { month: "N", great: 620, neutral: 420, bad: 280 },
-  { month: "D", great: 580, neutral: 480, bad: 350 },
-];
+interface ChartData {
+  month: string;
+  great: number;
+  neutral: number;
+  bad: number;
+}
 
-export function ReviewsChart() {
+interface ReviewsChartProps {
+  data?: ChartData[];
+  summary?: string;
+  location?: string;
+  period?: string;
+  selectedDateRange?: string;
+  onDateRangeChange?: (dateRange: string) => void;
+  isLoading?: boolean;
+}
+
+export function ReviewsChart({ 
+  data = [
+    { month: "J", great: 150, neutral: 350, bad: 200 },
+    { month: "F", great: 280, neutral: 300, bad: 150 },
+    { month: "M", great: 450, neutral: 280, bad: 120 },
+    { month: "A", great: 680, neutral: 320, bad: 180 },
+    { month: "M", great: 580, neutral: 400, bad: 250 },
+    { month: "J", great: 720, neutral: 380, bad: 200 },
+    { month: "J", great: 650, neutral: 420, bad: 280 },
+    { month: "A", great: 800, neutral: 350, bad: 150 },
+    { month: "S", great: 750, neutral: 300, bad: 200 },
+    { month: "O", great: 680, neutral: 380, bad: 320 },
+    { month: "N", great: 620, neutral: 420, bad: 280 },
+    { month: "D", great: 580, neutral: 480, bad: 350 },
+  ],
+  summary = "Consistently neutral reviews over the last 3 months for properties in London",
+  location = "London",
+  period = "last 3 months",
+  selectedDateRange = "14d",
+  onDateRangeChange,
+  isLoading = false
+}: ReviewsChartProps) {
   return (
     <div className="rounded-2xl border border-border bg-background/90 p-6 shadow-sm">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
@@ -27,9 +51,17 @@ export function ReviewsChart() {
           <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
             <option>Locations</option>
           </select>
-          <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
-            <option>Date range</option>
-          </select>
+          {onDateRangeChange ? (
+            <DateRangeSelect
+              value={selectedDateRange}
+              onChange={onDateRangeChange}
+              disabled={isLoading}
+            />
+          ) : (
+            <select className="rounded-full border border-border bg-background px-4 py-2 text-xs font-medium text-muted-foreground">
+              <option>Date range</option>
+            </select>
+          )}
         </div>
       </div>
 
