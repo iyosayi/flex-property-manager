@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import { Dashboard } from "@/components/features/dashboard/Dashboard";
 import { RightSidebar } from "@/components/layout/RightSidebar";
 import { AllProperties } from "@/components/features/properties/AllProperties";
 import { PropertyDetails } from "@/components/features/properties/PropertyDetails";
+import { useUIStore } from "@/stores";
 import NotFound from "./pages/NotFound";
 import Index from "./pages/Index";
 
@@ -20,13 +22,31 @@ const AppLayout = ({
 }: {
   children: ReactNode;
   showRightSidebar?: boolean;
-}) => (
-  <div className="flex h-screen w-full overflow-hidden bg-muted/40">
-    <Sidebar />
-    {children}
-    {showRightSidebar ? <RightSidebar /> : null}
-  </div>
-);
+}) => {
+  const { isRightSidebarOpen, handleResize } = useUIStore();
+  
+  // Add resize listener for responsive behavior
+  useEffect(() => {
+    const handleWindowResize = () => {
+      handleResize();
+    };
+
+    window.addEventListener('resize', handleWindowResize);
+    
+    // Call once on mount to ensure correct initial state
+    handleResize();
+    
+    return () => window.removeEventListener('resize', handleWindowResize);
+  }, [handleResize]);
+  
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-muted/40">
+      <Sidebar />
+      {children}
+      {showRightSidebar ? <RightSidebar /> : null}
+    </div>
+  );
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>

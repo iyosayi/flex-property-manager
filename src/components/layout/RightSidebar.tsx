@@ -1,11 +1,28 @@
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import apartmentCollage1 from "@/assets/images/properties/apartment-collage-1.jpg";
+import { useUIStore } from "@/stores";
 
 const topMentions = ["Cleanliness", "Great locations", "Cleanliness"];
 
 export function RightSidebar() {
+  const { isRightSidebarOpen, toggleRightSidebar } = useUIStore();
+
   return (
-    <aside className="flex h-full w-80 flex-shrink-0 flex-col border-l border-border bg-background">
+    <>
+      {/* Floating toggle button when sidebar is closed */}
+      {!isRightSidebarOpen && (
+        <button
+          onClick={toggleRightSidebar}
+          className="fixed right-4 top-1/2 -translate-y-1/2 z-50 flex items-center justify-center w-10 h-10 rounded-full bg-background border border-border shadow-lg hover:bg-muted transition-all duration-200"
+          aria-label="Open sidebar"
+        >
+          <ChevronLeft className="h-4 w-4 text-muted-foreground" />
+        </button>
+      )}
+      
+      <aside className={`flex h-full flex-shrink-0 flex-col border-l border-border bg-background transition-all duration-300 ease-in-out ${
+        isRightSidebarOpen ? 'w-80' : 'w-0 overflow-hidden'
+      }`}>
       <div className="border-b border-border px-6 pb-6 pt-7">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -15,6 +32,17 @@ export function RightSidebar() {
               <div className="text-xs text-muted-foreground">Manager</div>
             </div>
           </div>
+          <button
+            onClick={toggleRightSidebar}
+            className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-muted transition-colors duration-200"
+            aria-label={isRightSidebarOpen ? "Close sidebar" : "Open sidebar"}
+          >
+            {isRightSidebarOpen ? (
+              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+            ) : (
+              <ChevronLeft className="h-4 w-4 text-muted-foreground" />
+            )}
+          </button>
         </div>
       </div>
 
@@ -91,6 +119,7 @@ export function RightSidebar() {
           </div>
         </div>
       </div>
-    </aside>
+      </aside>
+    </>
   );
 }

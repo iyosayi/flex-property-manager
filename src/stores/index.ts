@@ -4,6 +4,7 @@ export { usePropertiesStore } from './propertiesStore';
 export { usePropertyDetailStore } from './propertyDetailStore';
 export { useReviewStatusStore } from './reviewStatusStore';
 export { useReviewsStore } from './reviewsStore';
+export { useUIStore } from './uiStore';
 
 export type { 
   ApiOverviewResponse,
@@ -38,3 +39,7 @@ export type {
   ApiReviewStatusResponse,
   ReviewStatusState
 } from './reviewStatusStore';
+
+export type {
+  UIState
+} from './uiStore';

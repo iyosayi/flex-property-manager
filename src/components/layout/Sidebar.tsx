@@ -1,11 +1,9 @@
 import { NavLink } from "react-router-dom";
-import { Home, TrendingUp, Settings, Building2 } from "lucide-react";
+import { Home, Building2 } from "lucide-react";
 
 const navigationItems = [
   { icon: Home, label: "Overview", to: "/" },
   { icon: Building2, label: "Properties", to: "/properties" },
-  { icon: TrendingUp, label: "Trends" },
-  { icon: Settings, label: "Settings" }
 ];
 
 export function Sidebar() {
