@@ -1,4 +1,4 @@
-## Flex Property Review Manager — Practical Assessment
+## Flex Property Review Manager
 
 A React + TypeScript single-page application bootstrapped with Vite, styled with Tailwind CSS and shadcn/ui components. It showcases a properties browsing experience, details pages, a booking widget, reviews, and a simple analytics dashboard.
 
@@ -70,21 +70,7 @@ Key folders:
 - `npm run lint` — Run ESLint
 
 ### Environment & Configuration
-- The project does not require a `.env` by default. If you add one, do not commit secrets. Follow standard Vite conventions (`VITE_*` prefix for client-exposed variables).
-- Keep behavior consistent across dev/test/prod where possible. Static assets and JSON live under `public/` to simplify hosting.
-
-### Deployment
-The app is a static SPA after build. You can deploy the `dist/` folder to any static host (e.g., Netlify, Vercel, GitHub Pages, S3):
-1. `npm run build`
-2. Upload or serve `dist/`
-
-If your host requires SPA fallback, configure a redirect to `index.html` for unknown routes.
-
-### Conventions
-- Prefer simple solutions and avoid duplication.
-- Keep files within ~200–300 lines; refactor when they grow beyond that.
-- Do not introduce new tech patterns unless needed; remove old/duplicate logic when refactoring.
-- No stubs/fake data in dev/prod runtime code (tests only if applicable).
+- The project requires a `.env`. If you add one, do not commit secrets. Follow standard Vite conventions (`VITE_*` prefix for client-exposed variables).
 
 ### Notes for Reviewers
 - To access the replica version of the property details page, navigate to `/website`.
