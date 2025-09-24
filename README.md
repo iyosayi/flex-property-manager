@@ -71,6 +71,7 @@ Key folders:
 
 ### Environment & Configuration
 - The project requires a `.env`. If you add one, do not commit secrets. Follow standard Vite conventions (`VITE_*` prefix for client-exposed variables).
+- Required variables are `VITE_API_BASE_URL=<url_to_backend_link`
 
 ### Notes for Reviewers
 - To access the replica version of the property details page, navigate to `/website`.
