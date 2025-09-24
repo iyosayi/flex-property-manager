@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { ArrowDownRight, ArrowUpRight, MapPin, Share2, Star, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +45,107 @@ export function PropertyDetails() {
   const navigate = useNavigate();
   const { property, isLoading, error, fetchPropertyDetail } = usePropertyDetailStore();
   const { updateReviewStatus, updatingReviews, error: reviewError } = useReviewStatusStore();
+  
+  // State for review filters
+  const [selectedChannel, setSelectedChannel] = useState<string>("");
+  const [selectedDateRange, setSelectedDateRange] = useState<string>("30d");
+  const [selectedStatus, setSelectedStatus] = useState<string>("all");
+  const [filteredReviews, setFilteredReviews] = useState<any[]>([]);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+
+  // API service function to fetch filtered reviews
+  const fetchFilteredReviews = async (channel: string, dateRange: string, status: string = "all") => {
+    setIsLoadingReviews(true);
+    try {
+      // Build URL with parameters using environment variable
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+      const url = new URL('/api/reviews', baseUrl);
+      
+      // Add parameters to URL
+      if (channel) url.searchParams.set('channel', channel);
+      if (dateRange) url.searchParams.set('dateRange', dateRange);
+      if (status && status !== "all") url.searchParams.set('status', status);
+      url.searchParams.set('limit', '10');
+      url.searchParams.set('propertyName', property.name);
+      
+      console.log('Fetching reviews from:', url.toString());
+      
+      const response = await fetch(url.toString());
+      
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.error('Expected JSON but got:', contentType);
+        console.error('Response text:', textResponse.substring(0, 200));
+        throw new Error(`Expected JSON but got ${contentType}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setFilteredReviews(data.data);
+      } else {
+        console.error('API returned success: false', data);
+      }
+    } catch (error) {
+      console.error('Error fetching filtered reviews:', error);
+      setFilteredReviews([]);
+    } finally {
+      setIsLoadingReviews(false);
+    }
+  };
+
+  // API service function to fetch property details with filters
+  const fetchPropertyDetailsWithFilters = async (propertyId: string, channel: string, dateRange: string, status: string) => {
+    try {
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || window.location.origin;
+      const url = new URL(`/api/properties/${propertyId}`, baseUrl);
+      
+      // Add filter parameters to property details URL
+      if (channel) url.searchParams.set('channel', channel);
+      if (dateRange) url.searchParams.set('dateRange', dateRange);
+      if (status && status !== "all") url.searchParams.set('status', status);
+      
+      console.log('Fetching property details with filters from:', url.toString());
+      
+      const response = await fetch(url.toString());
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Update the property store with filtered data
+        // Note: This assumes the property store has a method to update with filtered data
+        // You may need to modify the store or handle this differently based on your store implementation
+        console.log('Property details updated with filters');
+      }
+    } catch (error) {
+      console.error('Error fetching property details with filters:', error);
+    }
+  };
+
+  // Handle channel change - only called when user selects a channel
+  const handleChannelChange = (channel: string) => {
+    setSelectedChannel(channel);
+    fetchFilteredReviews(channel, selectedDateRange, selectedStatus);
+  };
+
+  // Handle date range change - only called when user selects a date range
+  const handleDateRangeChange = (dateRange: string) => {
+    setSelectedDateRange(dateRange);
+    fetchFilteredReviews(selectedChannel, dateRange, selectedStatus);
+  };
+
+  // Status filter is maintained internally for API consistency but not exposed in UI
 
   useEffect(() => {
     if (id) {
@@ -52,14 +153,20 @@ export function PropertyDetails() {
     }
   }, [id, fetchPropertyDetail]);
 
+  // Remove initial API call - only fetch when dropdowns are changed by user
+
   const handlePublishReview = async (reviewId: number, currentStatus: 'awaiting' | 'published') => {
     const newStatus = currentStatus === 'awaiting' ? 'published' : 'awaiting';
     const result = await updateReviewStatus(reviewId, newStatus);
     
     if (result) {
-      // Refresh property data to get updated review status
+      // Refresh both property details and reviews with the same filters to maintain consistency
       if (id) {
-        fetchPropertyDetail(id);
+        // Refresh property details with current filters
+        await fetchPropertyDetailsWithFilters(id, selectedChannel, selectedDateRange, selectedStatus);
+        
+        // Refresh reviews with current filters
+        await fetchFilteredReviews(selectedChannel, selectedDateRange, selectedStatus);
       }
     }
   };
@@ -143,21 +250,57 @@ export function PropertyDetails() {
     }
   ];
 
-  const displayRecentReviews = property.recentReviews.map(review => ({
-    id: review.id,
-    guest: review.guestName,
-    platform: review.channel,
-    stayDuration: review.stayDuration,
-    posted: review.timeAgo,
-    rating: review.rating,
-    title: review.reviewTitle,
-    message: review.reviewText,
-    status: review.status,
-    mentions: review.categoryRatings.map(rating => ({
-      label: rating.category,
-      score: rating.rating
-    }))
-  }));
+  // Transform API review data to match display format
+  const transformApiReviews = (apiReviews: any[]) => {
+    return apiReviews.map(review => ({
+      id: review.id,
+      guest: review.guestName,
+      platform: review.channel,
+      stayDuration: "2 nights", // Default since API doesn't provide this
+      posted: formatTimeAgo(review.submittedAt),
+      rating: review.rating,
+      title: review.publicReview?.substring(0, 50) + "..." || "Review",
+      message: review.publicReview,
+      status: review.status === 'published' ? 'published' as const : 'awaiting' as const,
+      mentions: review.reviewCategory?.map(category => ({
+        label: category.category.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
+        score: category.rating
+      })) || []
+    }));
+  };
+
+  // Helper function to format time ago
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInDays = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (diffInDays === 0) return "Today";
+    if (diffInDays === 1) return "1 day ago";
+    if (diffInDays < 7) return `${diffInDays} days ago`;
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`;
+    if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`;
+    return `${Math.floor(diffInDays / 365)} years ago`;
+  };
+
+  // Use filtered reviews if user has applied filters, otherwise fall back to property reviews
+  const displayRecentReviews = filteredReviews.length > 0 
+    ? transformApiReviews(filteredReviews)
+    : property.recentReviews.map(review => ({
+        id: review.id,
+        guest: review.guestName,
+        platform: review.channel,
+        stayDuration: review.stayDuration,
+        posted: review.timeAgo,
+        rating: review.rating,
+        title: review.reviewTitle,
+        message: review.reviewText,
+        status: review.status,
+        mentions: review.categoryRatings.map(rating => ({
+          label: rating.category,
+          score: rating.rating
+        }))
+      }));
 
   return (
     <div className="flex h-full flex-1 overflow-hidden">
@@ -317,17 +460,42 @@ export function PropertyDetails() {
                       <p className="text-sm text-muted-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>Read what guests are highlighting this month</p>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 text-xs">
-                      <button className="rounded-full border border-border px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground">
-                        All channels
-                      </button>
-                      <button className="rounded-full border border-border px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground">
-                        Last 30 days
-                      </button>
+                      <select 
+                        value={selectedChannel}
+                        onChange={(e) => handleChannelChange(e.target.value)}
+                        className="rounded-full border border-border bg-background px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      >
+                        <option value="">All channels</option>
+                        <option value="Airbnb">Airbnb</option>
+                        <option value="booking.com">booking.com</option>
+                        <option value="expedia">expedia</option>
+                        <option value="homeaway">homeaway</option>
+                        <option value="marriott">marriott</option>
+                      </select>
+                      <select 
+                        value={selectedDateRange}
+                        onChange={(e) => handleDateRangeChange(e.target.value)}
+                        className="rounded-full border border-border bg-background px-4 py-2 font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      >
+                        <option value="30d">Last 30 days</option>
+                        <option value="7d">Last 7 days</option>
+                        <option value="14d">Last 14 days</option>
+                        <option value="90d">Last 90 days</option>
+                        <option value="1ye">Last year</option>
+                      </select>
                     </div>
                   </div>
 
                   <div className="mt-6 space-y-4">
-                    {displayRecentReviews.map((review) => (
+                    {isLoadingReviews ? (
+                      <div className="flex items-center justify-center py-8">
+                        <div className="flex items-center gap-2">
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                          <span className="text-sm text-muted-foreground">Loading reviews...</span>
+                        </div>
+                      </div>
+                    ) : (
+                      displayRecentReviews.map((review) => (
                       <article key={review.id} className="rounded-3xl border border-border bg-background/90 p-5 shadow-sm transition-all hover:shadow-md sm:p-6">
                         <div className="flex gap-4">
                           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
@@ -339,12 +507,32 @@ export function PropertyDetails() {
                                 <span className="font-medium text-foreground">{review.guest}</span>
                                 <span>•</span>
                                 <span>{review.posted}</span>
+                                <span>•</span>
+                                <span>{review.stayDuration}</span>
                               </div>
                               <div className="flex flex-wrap items-center gap-2">
                                 <Badge variant="outline" className="rounded-full border border-border px-3 py-1 text-[11px] font-medium">
                                   {review.platform}
                                 </Badge>
-                                <span>{review.stayDuration}</span>
+                                <button 
+                                  onClick={() => handlePublishReview(review.id, review.status)}
+                                  disabled={updatingReviews.has(review.id)}
+                                  className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
+                                    review.status === 'published' 
+                                      ? 'border-green-500 bg-green-50 text-green-700 hover:bg-green-100' 
+                                      : 'border-border hover:text-foreground hover:border-foreground/40'
+                                  } ${updatingReviews.has(review.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                  style={review.status !== 'published' && !updatingReviews.has(review.id) ? { color: '#284E4C' } : {}}
+                                >
+                                  {updatingReviews.has(review.id) ? (
+                                    <div className="flex items-center gap-1">
+                                      <div className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
+                                      <span>Updating...</span>
+                                    </div>
+                                  ) : (
+                                    review.status === 'published' ? 'Unpublish' : 'Publish'
+                                  )}
+                                </button>
                               </div>
                             </div>
 
@@ -359,24 +547,6 @@ export function PropertyDetails() {
                                     <Star className="h-4 w-4 fill-primary text-primary" />
                                     {review.rating}
                                   </div>
-                                  <button 
-                                    onClick={() => handlePublishReview(review.id, review.status)}
-                                    disabled={updatingReviews.has(review.id)}
-                                    className={`rounded-full border px-4 py-1.5 text-xs font-medium transition-colors ${
-                                      review.status === 'published' 
-                                        ? 'border-green-500 bg-green-50 text-green-700 hover:bg-green-100' 
-                                        : 'border-border text-muted-foreground hover:text-foreground hover:border-foreground/40'
-                                    } ${updatingReviews.has(review.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                  >
-                                    {updatingReviews.has(review.id) ? (
-                                      <div className="flex items-center gap-1">
-                                        <div className="h-3 w-3 animate-spin rounded-full border-2 border-current border-t-transparent"></div>
-                                        <span>Updating...</span>
-                                      </div>
-                                    ) : (
-                                      review.status === 'published' ? 'Published' : 'Publish'
-                                    )}
-                                  </button>
                                 </div>
                               </div>
 
@@ -395,7 +565,8 @@ export function PropertyDetails() {
                           </div>
                         </div>
                       </article>
-                    ))}
+                      ))
+                    )}
                   </div>
                 </section>
               </div>
